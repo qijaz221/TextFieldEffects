@@ -55,6 +55,26 @@ import UIKit
             updatePlaceholder()
         }
     }
+    
+    
+    /**
+     Bottom border thickness when textfield is active
+     */
+    @IBInspectable dynamic open var activeBorderThickness: CGFloat = 1 {
+        didSet {
+            updateBorder()
+        }
+    }
+    
+    
+    /**
+     Bottom border thickness when textfield is in-active
+     */
+    @IBInspectable dynamic open var inactiveBorderThickness: CGFloat = 1 {
+        didSet {
+            updateBorder()
+        }
+    }
 
     override open var placeholder: String? {
         didSet {
@@ -69,7 +89,7 @@ import UIKit
         }
     }
     
-    private let borderThickness: (active: CGFloat, inactive: CGFloat) = (active: 2, inactive: 0.5)
+    
     private let placeholderInsets = CGPoint(x: 0, y: 6)
     private let textFieldInsets = CGPoint(x: 0, y: 12)
     private let inactiveBorderLayer = CALayer()
@@ -109,7 +129,7 @@ import UIKit
 			self.placeholderLabel.alpha = 1.0
 		})
 
-        activeBorderLayer.frame = rectForBorder(borderThickness.active, isFilled: true)
+        activeBorderLayer.frame = rectForBorder(activeBorderThickness, isFilled: true)
     }
     
     override open func animateViewsForTextDisplay() {
@@ -121,17 +141,17 @@ import UIKit
                 self.animationCompletionHandler?(.textDisplay)
             })
             
-            activeBorderLayer.frame = self.rectForBorder(self.borderThickness.active, isFilled: false)
+            activeBorderLayer.frame = self.rectForBorder(activeBorderThickness, isFilled: false)
         }
     }
     
     // MARK: - Private
     
     private func updateBorder() {
-        inactiveBorderLayer.frame = rectForBorder(borderThickness.inactive, isFilled: !isFirstResponder)
+        inactiveBorderLayer.frame = rectForBorder(inactiveBorderThickness, isFilled: !isFirstResponder)
         inactiveBorderLayer.backgroundColor = borderInactiveColor?.cgColor
         
-        activeBorderLayer.frame = rectForBorder(borderThickness.active, isFilled: isFirstResponder)
+        activeBorderLayer.frame = rectForBorder(activeBorderThickness, isFilled: isFirstResponder)
         activeBorderLayer.backgroundColor = borderActiveColor?.cgColor
     }
     
